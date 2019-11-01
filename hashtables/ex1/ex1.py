@@ -12,20 +12,39 @@ def get_indices_of_item_weights(weights, length, limit):
     YOUR CODE HERE
     """
     ht = HashTable(16)
+
+    if length < 2:
+        return None
+
     # Loop over weights
     for i in range(length):
-        # Take value and subtract it from limit to make the to_complete
+        # Take value and subtract it from limit to make the to_complete, to check if we've already got it
         to_complete = limit - weights[i]
-        # print(to_complete)
 
-        if hash_table_retrieve(ht, to_complete) is None:
-            # store weights[i] in the Hastable with a value of i
-            hash_table_insert(ht, weights[i], i)
-        
-        else:
-            answer = (str(weights[i]), str(to_complete) )
+        # check if to_complete is already in the hash_table
+        if hash_table_retrieve(ht, to_complete) is not None:
+            answer = [str(weights[i]), str(to_complete) ]
             print_answer(answer)
             return
+        
+        else:
+            # Add to hash_Table
+            hash_table_insert(ht, weights[i], i)
+
+
+
+
+        # if weights[i] + to_complete == limit:
+        #     answer = (str(weights[i]), str(to_complete) )
+        #     print_answer(answer)
+        #     return
+
+        # if hash_table_retrieve(ht, to_complete) is None:
+        #     # store weights[i] in the Hastable with a value of i
+        #     hash_table_insert(ht, weights[i], i)
+        
+        # else:
+        
     
 def print_answer(answer):
     if answer is not None:
