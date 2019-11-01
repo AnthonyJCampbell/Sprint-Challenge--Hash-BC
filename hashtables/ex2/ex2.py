@@ -18,15 +18,22 @@ def reconstruct_trip(tickets, length):
 
     # Hash each ticket so the starting location is the key and the desination is the value.
     for ticket in tickets:
-        print(ticket.source)
-        print(ticket.destination)
+        # print(ticket.source)
+        # print(ticket.destination)
         hash_table_insert(hashtable, ticket.source, ticket.destination)
 
-    # Find the n-th location in the route by checking the hashtable for the n-1th
-    print(hashtable.storage)
+    # # Find the n-th location in the route by checking the hashtable for the n-1th
+    counter = 0
+    first_ticket = hash_table_retrieve(hashtable, "NONE")
+    route[counter] = first_ticket
+    current_ticket = first_ticket
 
-    # print(current_ticket)
-
+    while current_ticket is not "NONE":
+        counter += 1
+        # Retrieve value by using current ticket as key in hash_table_retrieve
+        current_ticket = hash_table_retrieve(hashtable, current_ticket)
+        route[counter] = current_ticket
+        
     return route
 
 ticket_1 = Ticket("NONE", "PDX")
