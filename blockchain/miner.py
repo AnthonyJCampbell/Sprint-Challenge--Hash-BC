@@ -23,7 +23,7 @@ def proof_of_work(last_proof):
 
     start = timer()
 
-    print("Searching for next proof")
+    print("\nSearching for next proof")
     proof = str(0)
 
     while valid_proof(str(last_proof), proof) is False:
@@ -43,7 +43,8 @@ def valid_proof(last_proof, proof):
 
     last_hash = hashlib.sha256(last_proof.encode()).hexdigest()
     newly_hashed_proof = hashlib.sha256(proof.encode()).hexdigest()
-
+    
+    # print(last_hash[-4:])
 
     # print("\n")
     # print("\n")
@@ -52,7 +53,10 @@ def valid_proof(last_proof, proof):
     # print(newly_hashed_proof)
     # print("\n")
     # print("\n")
+    # print(last_hash[-4:] == newly_hashed_proof[:4] )
 
+    # print(last_hash[-6:])
+    # print(newly_hashed_proof[:6] )
     return last_hash[-6:] == newly_hashed_proof[:6] 
 
 # proof_of_work(123456)
@@ -79,13 +83,17 @@ if __name__ == '__main__':
         # Get the last proof from the server
         r = requests.get(url=node + "/last_proof")
         data = r.json()
+        print(data.get('proof'))
         new_proof = proof_of_work(data.get('proof'))
 
         post_data = {"proof": new_proof,
                      "id": id}
+        # temp = hashlib.sha256(data["proof"].encode()).hexdigest()
+        # print(f"We're sending proof of {hashlib.sha256(new_proof.encode).hexdigest()}, which corresponds to {temp}")
 
         r = requests.post(url=node + "/mine", json=post_data)
         data = r.json()
+
         if data.get('message') == 'New Block Forged':
             coins_mined += 1
             print("Total coins mined: " + str(coins_mined))
